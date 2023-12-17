@@ -1,6 +1,7 @@
 using CommonLibrary;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using ProductDemo.CustomMiddlewares;
 using ProductDemo.Middlewares;
 using ProductDemo.Models;
 using System.IO.Compression;
@@ -42,7 +43,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-//app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

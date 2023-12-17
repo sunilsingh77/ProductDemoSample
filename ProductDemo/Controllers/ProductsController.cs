@@ -15,20 +15,41 @@ namespace ProductDemo.Controllers
     public class ProductsController : Controller
     {
         private readonly ProductDbContext _context;
-        public long LoggedInUserId;
+        public string LoggedInUserId;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public ProductsController(ProductDbContext context, IHttpContextAccessor httpContextAccessor)
+        private readonly ILogger<ProductsController> _logger;
+        public ProductsController(ProductDbContext context, 
+                                  IHttpContextAccessor httpContextAccessor,
+                                  ILogger<ProductsController> logger)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
-             ClaimsIdentity user = (ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity;            
-            //LoggedInUserId = Convert.ToUInt32(user.FindFirst("UserId").Value.ToString());
+             ClaimsIdentity user = (ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity;
+            //LoggedInUserId = Convert.ToString(user.FindFirst("UserId").Value);
+            this._logger = logger;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var username = _httpContextAccessor.HttpContext.User.Identity.Name;
+            _logger.LogInformation("Getting customer details");
+            //try
+            //{
+            //    var a = 1;
+            //    var b = 0;
+            //    int c = a / b;
+            //}
+            //catch(Exception ex)
+            //{
+            //    throw new ApplicationException(ex.Message);
+            //}
+            var username = _httpContextAccessor.HttpContext.User.Identity.Name; // Get LoggedIn Session User
+            
+            if (username == null)
+            {
+                //throw new ApplicationException("User does not exist.");
+                throw new Exception();
+            }
 
             var productDbContext = _context.Products.Include(p => p.ProductCategory);
             return View(await productDbContext.ToListAsync());
