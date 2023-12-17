@@ -21,16 +21,13 @@ namespace ProductDemo.Controllers
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
-           // ClaimsIdentity user = (ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity;            
-           // LoggedInUserId = Convert.ToUInt32(user.FindFirst("UserId").Value.ToString());
+             ClaimsIdentity user = (ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity;            
+            //LoggedInUserId = Convert.ToUInt32(user.FindFirst("UserId").Value.ToString());
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            int a = 10;
-            int b = 0;
-            int c = a / b;
             var username = _httpContextAccessor.HttpContext.User.Identity.Name;
 
             var productDbContext = _context.Products.Include(p => p.ProductCategory);

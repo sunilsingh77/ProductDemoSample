@@ -1,3 +1,4 @@
+using CommonLibrary;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using ProductDemo.Middlewares;
@@ -21,7 +22,10 @@ builder.Services.AddMemoryCache();
 builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
 builder.Services.AddResponseCompression(options => options.Providers.Add<GzipCompressionProvider>());
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<IConfigManager, ConfigManager>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+//builder.Services.AddSingleton<ExceptionMiddleware>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,7 +42,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-app.UseMiddleware<ExceptionMiddleware>();
+//app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

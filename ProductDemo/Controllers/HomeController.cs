@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CommonLibrary;
+using Microsoft.AspNetCore.Mvc;
 using ProductDemo.Models;
 using System.Diagnostics;
 
@@ -7,14 +8,17 @@ namespace ProductDemo.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfigManager _configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IConfigManager configuration)
         {
+            this._configuration = configuration;            
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+            string strConn = _configuration.ProductDB;// reading from appsetting.json
             return View();
         }
 
