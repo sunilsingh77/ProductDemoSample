@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProductDemo.Models;
+using ProductDemo.ViewModels;
 
 namespace ProductDemo.Controllers
 {
@@ -50,6 +52,14 @@ namespace ProductDemo.Controllers
                 //throw new ApplicationException("User does not exist.");
                 throw new Exception();
             }
+
+            _logger.LogTrace("Log message from trace method");
+            _logger.LogDebug("Log message from Debug method");
+            _logger.LogInformation("Log message from Information method");
+            _logger.LogWarning("Log message from Warning method");
+            _logger.LogError("Log message from Error method");
+            _logger.LogCritical("Log message from Critical method");
+
 
             var productDbContext = _context.Products.Include(p => p.ProductCategory);
             return View(await productDbContext.ToListAsync());
